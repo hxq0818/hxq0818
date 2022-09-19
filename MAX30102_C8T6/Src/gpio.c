@@ -48,15 +48,26 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin : PA8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_8;
+  GPIO_InitStruct.Pin = MAX30102_INT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(MAX30102_INT_GPIO_Port, &GPIO_InitStruct);
+	
+	  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(MAX30102_INT_EXTI_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(MAX30102_INT_EXTI_IRQn);
 
 }
 
 /* USER CODE BEGIN 2 */
-
+uint8_t max30102_int_flag=0;
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+		if(GPIO_Pin==MAX30102_INT_Pin)
+		{
+				max30102_int_flag=1;
+		}
+}
 /* USER CODE END 2 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

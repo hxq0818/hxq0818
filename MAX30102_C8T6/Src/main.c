@@ -28,7 +28,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "arm_math.h"
+#include "arm_const_structs.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,6 +98,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	max30102_init();
 	uint32_t data[2];
+	float input,output;
+	arm_fir_instance_f32 S;
+	/* 初始化结构体S */
+	arm_fir_init_f32(&S, NUM_TAPS,(float32_t *)&firCoeffs32LP[0], &firStateF32[0], blockSize);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -106,11 +111,23 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+#if 0
 				/*I2C1连接，没有用到中断管脚*/
 		max30102_fifo_read(data);
 		//printf("%d,%d\n",data[0],data[1]);
 		printf("%d\n",data[0]);
 		HAL_Delay(12);
+#else
+		if(max30102_int_flag)
+		{
+			
+			max30102_int_flag=0;
+			max30102_fifo_read(data);
+			input=data[1];
+			arm_fir_f32(&S,&input,&output,  blockSize);
+			printf("%d,%f\n",data[1],output);
+		}
+#endif
   }
   /* USER CODE END 3 */
 }

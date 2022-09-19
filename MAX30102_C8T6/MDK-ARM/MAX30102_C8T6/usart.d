@@ -28,3 +28,4 @@ max30102_c8t6\usart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_e
 max30102_c8t6\usart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h
 max30102_c8t6\usart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 max30102_c8t6\usart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+max30102_c8t6\usart.o: D:\PZxuanwuZ400\Keil_5\ARM\ARMCC\Bin\..\include\stdio.h

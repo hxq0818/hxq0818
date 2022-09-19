@@ -32,3 +32,9 @@ max30102_c8t6\main.o: ../Inc/usart.h
 max30102_c8t6\main.o: ../Inc/gpio.h
 max30102_c8t6\main.o: D:\PZxuanwuZ400\Keil_5\ARM\ARMCC\Bin\..\include\stdio.h
 max30102_c8t6\main.o: ..\user\max30102\max30102.h
+max30102_c8t6\main.o: ..\user\max30102\Include\arm_math.h
+max30102_c8t6\main.o: ../Drivers/CMSIS/Include/core_cm3.h
+max30102_c8t6\main.o: D:\PZxuanwuZ400\Keil_5\ARM\ARMCC\Bin\..\include\string.h
+max30102_c8t6\main.o: D:\PZxuanwuZ400\Keil_5\ARM\ARMCC\Bin\..\include\math.h
+max30102_c8t6\main.o: ..\user\max30102\Include\arm_const_structs.h
+max30102_c8t6\main.o: ..\user\max30102\Include\arm_common_tables.h

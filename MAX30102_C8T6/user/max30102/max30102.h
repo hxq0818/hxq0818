@@ -17,7 +17,19 @@ extern I2C_HandleTypeDef hi2c1;
 #define  delay_ms(ms)                                HAL_Delay(ms)
 /***********************************************************************************/
 
+//2022-09-19 V1.1 start 
+#define BLOCK_SIZE           1     /* 调用一次arm_fir_f32处理的采样点个数 */
+#define NUM_TAPS             29     /* 滤波器系数个数 */
 
+extern uint32_t blockSize ;
+extern uint32_t numBlocks ;            /* 需要调用arm_fir_f32的次数 */
+
+static float firStateF32[BLOCK_SIZE + NUM_TAPS - 1];        /* 状态缓存，大小numTaps + blockSize - 1*/
+
+/* 低通滤波器系数 通过fadtool获取*/
+extern const float firCoeffs32LP[NUM_TAPS];
+
+//2022-09-19 V1.1 end
 
 #define I2C_WRITE_ADDR 0xAE
 #define I2C_READ_ADDR 0xAF
