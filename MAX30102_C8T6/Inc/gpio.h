@@ -32,10 +32,7 @@
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
-#define MAX30102_INT_Pin GPIO_PIN_8
-#define MAX30102_INT_GPIO_Port GPIOA
-#define MAX30102_INT_EXTI_IRQn EXTI9_5_IRQn
-extern uint8_t max30102_int_flag;
+extern uint8_t max30102_int_flag;  		//÷–∂œ±Í÷æ
 /* USER CODE END Private defines */
 
 void MX_GPIO_Init(void);

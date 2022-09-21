@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/Administrator/Desktop/MAX30102_C8T6/Inc
+HeaderPath=C:/Users/Administrator/Desktop/MAX30102C820220921/Inc
 HeaderFiles=gpio.h;i2c.h;usart.h;stm32f1xx_it.h;stm32f1xx_hal_conf.h;main.h;
-SourcePath=C:/Users/Administrator/Desktop/MAX30102_C8T6/Src
+SourcePath=C:/Users/Administrator/Desktop/MAX30102C820220921/Src
 SourceFiles=gpio.c;i2c.c;usart.c;stm32f1xx_it.c;stm32f1xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]

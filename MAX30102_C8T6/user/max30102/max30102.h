@@ -1,11 +1,3 @@
-/**
-*@file
-*@brief     max30102心率头文件
-*@details
-*@author        黄晓庆
-*@date        2022-09-19
-*@version       v1.0
-*/
 #ifndef __MAX30102_H
 #define __MAX30102_H
 
@@ -17,19 +9,7 @@ extern I2C_HandleTypeDef hi2c1;
 #define  delay_ms(ms)                                HAL_Delay(ms)
 /***********************************************************************************/
 
-//2022-09-19 V1.1 start 
-#define BLOCK_SIZE           1     /* 调用一次arm_fir_f32处理的采样点个数 */
-#define NUM_TAPS             29     /* 滤波器系数个数 */
 
-extern uint32_t blockSize ;
-extern uint32_t numBlocks ;            /* 需要调用arm_fir_f32的次数 */
-
-static float firStateF32[BLOCK_SIZE + NUM_TAPS - 1];        /* 状态缓存，大小numTaps + blockSize - 1*/
-
-/* 低通滤波器系数 通过fadtool获取*/
-extern const float firCoeffs32LP[NUM_TAPS];
-
-//2022-09-19 V1.1 end
 
 #define I2C_WRITE_ADDR 0xAE
 #define I2C_READ_ADDR 0xAF
@@ -60,8 +40,17 @@ extern const float firCoeffs32LP[NUM_TAPS];
 #define VERSION_ID 0XFE
 #define PART_ID 0XFF
 
+
+extern bool Hand_Contact;
+
+
 void max30102_init(void);
-void max30102_fifo_read(uint32_t *data);
+void max30102_fifo_read(float *data);
 void max30102_i2c_read(uint8_t reg_adder,uint8_t *pdata, uint8_t data_size);
+uint16_t max30102_getHeartRate(float *input_data,uint16_t cache_nums);
+float max30102_getSpO2(float *ir_input_data,float *red_input_data,uint16_t cache_nums);
+
+int16_t Max30120GeiHeartData(int *input_data);
+int16_t Max30120GeiSpo2Data(float *input_data);
 
 #endif /* __MAX30102_H */

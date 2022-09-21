@@ -27,7 +27,7 @@
 /* Configure GPIO                                                             */
 /*----------------------------------------------------------------------------*/
 /* USER CODE BEGIN 1 */
-
+uint8_t max30102_int_flag=0;  		//÷–∂œ±Í÷æ
 /* USER CODE END 1 */
 
 /** Configure pins as 
@@ -47,23 +47,22 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
-  /*Configure GPIO pin : PA8 */
-  GPIO_InitStruct.Pin = MAX30102_INT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(MAX30102_INT_GPIO_Port, &GPIO_InitStruct);
-	
-	  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(MAX30102_INT_EXTI_IRQn, 1, 0);
-  HAL_NVIC_EnableIRQ(MAX30102_INT_EXTI_IRQn);
+  /*Configure GPIO pin : PtPin */
+  GPIO_InitStruct.Pin = MAX30102_IN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(MAX30102_IN_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 }
 
 /* USER CODE BEGIN 2 */
-uint8_t max30102_int_flag=0;
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-		if(GPIO_Pin==MAX30102_INT_Pin)
+		if(GPIO_Pin==MAX30102_IN_Pin)
 		{
 				max30102_int_flag=1;
 		}

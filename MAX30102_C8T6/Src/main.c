@@ -23,18 +23,25 @@
 #include "i2c.h"
 #include "usart.h"
 #include "gpio.h"
-#include "stdio.h"
-#include "max30102.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "arm_math.h"
-#include "arm_const_structs.h"
+#include "stdio.h"
+#include "max30102.h"
+#include "max30102_fir.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+
+
+#define CACHE_NUMS 100//缓存数
+#define PPG_DATA_THRESHOLD 100000 	//检测阈值
+
+
+float ppg_data_cache_RED[CACHE_NUMS]={0};  //缓存区
+float ppg_data_cache_IR[CACHE_NUMS]={0};  //缓存区
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -96,12 +103,18 @@ int main(void)
   MX_I2C1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+	HAL_Delay(500);
 	max30102_init();
-	uint32_t data[2];
-	float input,output;
-	arm_fir_instance_f32 S;
-	/* 初始化结构体S */
-	arm_fir_init_f32(&S, NUM_TAPS,(float32_t *)&firCoeffs32LP[0], &firStateF32[0], blockSize);
+	printf("max30102_init\r\n");
+	max30102_fir_init();
+	printf("max30102_fir_init\r\n");
+
+	uint32_t cache_counter=0;  //缓存计数器
+	uint32_t i = 0;
+	uint8_t max30102_flag = 0;
+	float max30102_data[2],fir_output[2];
+	float max30102_Spo2_data[5];
+	int max30102_heart_data[5];
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,23 +124,50 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-#if 0
-				/*I2C1连接，没有用到中断管脚*/
-		max30102_fifo_read(data);
-		//printf("%d,%d\n",data[0],data[1]);
-		printf("%d\n",data[0]);
-		HAL_Delay(12);
-#else
-		if(max30102_int_flag)
-		{
-			
-			max30102_int_flag=0;
-			max30102_fifo_read(data);
-			input=data[1];
-			arm_fir_f32(&S,&input,&output,  blockSize);
-			printf("%d,%f\n",data[1],output);
-		}
-#endif
+		if(max30102_int_flag)			//中断信号产生
+			{
+				
+//				if(cache_counter % 10 == 0)
+//						printf("cache_counter：%d \r\n",cache_counter);
+				
+					max30102_int_flag = 0;
+					max30102_fifo_read(max30102_data);		//读取数据
+				
+				
+					ir_max30102_fir(&max30102_data[0],&fir_output[0]);
+					red_max30102_fir(&max30102_data[1],&fir_output[1]);  //滤波
+					if((max30102_data[0]>PPG_DATA_THRESHOLD)&&(max30102_data[1]>PPG_DATA_THRESHOLD))  //大于阈值，说明传感器有接触
+					{		
+							ppg_data_cache_IR[cache_counter]=fir_output[0];
+							ppg_data_cache_RED[cache_counter]=fir_output[1];
+							cache_counter++;
+						Hand_Contact = false;
+					}
+					else				//小于阈值
+					{
+							Hand_Contact = true;
+							cache_counter=0;
+					}
+
+
+					if(cache_counter>=CACHE_NUMS)  //收集满了数据
+					{
+						printf("Hand_Contact:%d\r\n",Hand_Contact);
+						max30102_heart_data[max30102_flag] = max30102_getHeartRate(ppg_data_cache_IR,CACHE_NUMS);
+						max30102_Spo2_data[max30102_flag] = max30102_getSpO2(ppg_data_cache_IR,ppg_data_cache_RED,CACHE_NUMS);
+						max30102_flag++;
+						printf("心率：%d  次/min   ",max30102_getHeartRate(ppg_data_cache_IR,CACHE_NUMS));
+						printf("血氧：%.2f  %%\n",max30102_getSpO2(ppg_data_cache_IR,ppg_data_cache_RED,CACHE_NUMS));
+						cache_counter=0;
+						if(max30102_flag == 5){
+								max30102_flag = 0;
+								printf("****************\r\n");
+								printf("心率：%d  次/min   ",Max30120GeiHeartData(max30102_heart_data));
+								printf("血氧：%d  %%\n",Max30120GeiSpo2Data(max30102_Spo2_data));
+								printf("****************\r\n");
+						}	
+					}
+			}
   }
   /* USER CODE END 3 */
 }

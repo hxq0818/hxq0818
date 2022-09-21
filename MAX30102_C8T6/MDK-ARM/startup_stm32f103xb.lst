@@ -462,12 +462,12 @@ ARM Macro Assembler    Page 8
               00000000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
-ork --depend=max30102_c8t6\startup_stm32f103xb.d -omax30102_c8t6\startup_stm32f
-103xb.o -I.\RTE\_MAX30102_C8T6 -ID:\PZxuanwuZ400\Packs\ARM\CMSIS\5.5.1\CMSIS\Co
-re\Include -ID:\PZxuanwuZ400\Packs\Keil\STM32F1xx_DFP\1.0.5\Device\Include --pr
-edefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 528" --predefin
-e="_RTE_ SETA 1" --predefine="STM32F10X_MD SETA 1" --list=startup_stm32f103xb.l
-st startup_stm32f103xb.s
+ork --depend=max30102c820220921\startup_stm32f103xb.d -omax30102c820220921\star
+tup_stm32f103xb.o -I.\RTE\_MAX30102C820220921 -ID:\PZxuanwuZ400\Packs\ARM\CMSIS
+\5.5.1\CMSIS\Core\Include -ID:\PZxuanwuZ400\Packs\Keil\STM32F1xx_DFP\1.0.5\Devi
+ce\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 
+528" --predefine="_RTE_ SETA 1" --predefine="STM32F10X_MD SETA 1" --list=startu
+p_stm32f103xb.lst startup_stm32f103xb.s
 
 
 
